@@ -38,7 +38,7 @@ La arquitectura está implementada con **Node.js + TypeScript**, **Serverless Fr
 
 ---
 
-## ⚙Requisitos
+## Requisitos
 - Node.js 20+  
 - Serverless Framework v4  
 - Cuenta AWS con permisos: Lambda, DynamoDB, SNS, SQS, EventBridge, RDS  
@@ -48,7 +48,7 @@ La arquitectura está implementada con **Node.js + TypeScript**, **Serverless Fr
 ## Variables de Entorno
 
 provider:
-  environment:
+# environment:
     DDB_TABLE: AppointmentsTable
     APPOINTMENT_TOPIC_ARN: !Ref AppointmentTopic
     EVENT_BUS_NAME: default
@@ -68,28 +68,28 @@ provider:
 
 ## Cómo Ejecutar
 * Local (offline)
-- npx serverless offline
+* npx serverless offline
 
-Endpoints disponibles:
-- POST http://localhost:3000/appointments
-- GET http://localhost:3000/appointments/{insuredId}
+## Endpoints disponibles:
+* POST http://localhost:3000/appointments
+* GET http://localhost:3000/appointments/{insuredId}
 
-* AWS (desplegar)
-- npx serverless deploy
+## AWS (desplegar)
+* npx serverless deploy
 
-Endpoints desplegados (ejemplo):
-POST - https://yj6hb7xlw1.execute-api.us-east-1.amazonaws.com/appointments
-GET  - https://yj6hb7xlw1.execute-api.us-east-1.amazonaws.com/appointments/{insuredId}
+## Endpoints desplegados (ejemplo):
+* POST - https://yj6hb7xlw1.execute-api.us-east-1.amazonaws.com/appointments
+* GET  - https://yj6hb7xlw1.execute-api.us-east-1.amazonaws.com/appointments/{insuredId}
 
 ## Documentación OpenAPI
 1. Ingresar a swagger editor: https://swagger.io/tools/swagger-editor/
 2. Importar la sgte url: https://yj6hb7xlw1.execute-api.us-east-1.amazonaws.com/docs
 
 ## Tests
-* Ejecutar todos los tests:
-- npm run test
+## Ejecutar todos los tests:
+* npm run test
 
-* Con cobertura:
-- npm run test:cov
+## Con cobertura:
+* npm run test:cov
    
 
