@@ -4,7 +4,28 @@ service: appoinment
 provider:
   name: aws
   runtime: nodejs20.x
-  
+  region: us-east-1
+  environment:
+    DDB_TABLE: AppointmentsTable
+    APPOINTMENT_TOPIC_ARN: !Ref AppointmentTopic  
+  iam:
+    role:
+      statements:
+        # DynamoDB
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:GetItem
+            - dynamodb:Query
+          Resource:
+            - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/AppointmentsTable
+            - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/AppointmentsTable/index/InsuredGSI
+        # SNS
+        - Effect: Allow
+          Action: sns:Publish
+          Resource: !Ref AppointmentTopic
+
 plugins:
   - serverless-offline
 
@@ -18,3 +39,33 @@ functions:
       - httpApi:
           path: /appointments/{insuredId}
           method: get
+
+resources:
+  Resources:
+    # DynamoDB
+    AppointmentsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: AppointmentsTable
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: appointmentId
+            AttributeType: S
+          - AttributeName: insuredId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: appointmentId
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: InsuredGSI
+            KeySchema:
+              - AttributeName: insuredId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+
+    # SNS Topic
+    AppointmentTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: appointment-topic

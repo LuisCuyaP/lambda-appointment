@@ -7,27 +7,18 @@ const TABLE = process.env.DDB_TABLE || 'AppointmentsTable';
 
 const ddb = new AWS.DynamoDB.DocumentClient({});
 
-const mem = {
-  items: new Map<string, Appointment>()
-};
+const mem = { items: new Map<string, Appointment>() };
 
 export class DynamoAppointmentRepository implements AppointmentRepository {
   async createPending(a: Appointment): Promise<void> {
-    if (isOffline) {
-      mem.items.set(a.appointmentId, a);
-      return;
-    }
+    if (isOffline) { mem.items.set(a.appointmentId, a); return; }
     await ddb.put({ TableName: TABLE, Item: a }).promise();
   }
 
   async complete(appointmentId: string): Promise<void> {
     if (isOffline) {
       const it = mem.items.get(appointmentId);
-      if (it) {
-        it.status = 'completed';
-        it.updatedAt = new Date().toISOString();
-        mem.items.set(appointmentId, it);
-      }
+      if (it) { it.status = 'completed'; it.updatedAt = new Date().toISOString(); }
       return;
     }
     await ddb.update({

@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../src/functions/hello.ts"],
-  "sourcesContent": ["import { APIGatewayProxyHandlerV2 } from 'aws-lambda';\r\n\r\nexport const handler: APIGatewayProxyHandlerV2 = async () => {\r\n  return {\r\n    statusCode: 200,\r\n    body: JSON.stringify({\r\n      message: \"Go Serverless with TypeScript!\"\r\n    })\r\n  };\r\n};"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAEO,IAAM,UAAoC,YAAY;AAC3D,SAAO;AAAA,IACL,YAAY;AAAA,IACZ,MAAM,KAAK,UAAU;AAAA,MACnB,SAAS;AAAA,IACX,CAAC;AAAA,EACH;AACF;",
-  "names": []
-}
