@@ -166,7 +166,17 @@ var openapi_default = {
         }
       }
     }
-  }
+  },
+  servers: [
+    {
+      url: "https://yj6hb7xlw1.execute-api.us-east-1.amazonaws.com",
+      description: "AWS HTTP API"
+    },
+    {
+      url: "http://localhost:3000",
+      description: "Local (serverless offline)"
+    }
+  ]
 };
 
 // src/Interfaces/Http/docs.ts
