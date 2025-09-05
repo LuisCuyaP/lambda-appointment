@@ -10,6 +10,9 @@
         "name": "aws",
         "runtime": "nodejs20.x",
         "region": "us-east-1",
+        "httpApi": {
+          "cors": true
+        },
         "environment": {
           "DDB_TABLE": "AppointmentsTable",
           "APPOINTMENT_TOPIC_ARN": {
@@ -84,6 +87,12 @@
               "Type": "AWS::Logs::LogGroup",
               "Properties": {
                 "LogGroupName": "/aws/lambda/appoinment-dev-appointment_cl"
+              }
+            },
+            "DocsLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/appoinment-dev-docs"
               }
             },
             "IamRoleLambdaExecution": {
@@ -226,7 +235,7 @@
               "Properties": {
                 "Code": {
                   "S3Bucket": "serverless-framework-deployments-us-east-1-55023442-a1fe",
-                  "S3Key": "serverless/appoinment/dev/1757088442813-2025-09-05T16:07:22.813Z/appoinment.zip"
+                  "S3Key": "serverless/appoinment/dev/1757092480877-2025-09-05T17:14:40.877Z/appoinment.zip"
                 },
                 "Handler": "src/Interfaces/Http/appointment.router",
                 "Runtime": "nodejs20.x",
@@ -269,7 +278,7 @@
               "Properties": {
                 "Code": {
                   "S3Bucket": "serverless-framework-deployments-us-east-1-55023442-a1fe",
-                  "S3Key": "serverless/appoinment/dev/1757088442813-2025-09-05T16:07:22.813Z/appoinment.zip"
+                  "S3Key": "serverless/appoinment/dev/1757092480877-2025-09-05T17:14:40.877Z/appoinment.zip"
                 },
                 "Handler": "src/Interfaces/Workers/appointment_pe.handler",
                 "Runtime": "nodejs20.x",
@@ -312,7 +321,7 @@
               "Properties": {
                 "Code": {
                   "S3Bucket": "serverless-framework-deployments-us-east-1-55023442-a1fe",
-                  "S3Key": "serverless/appoinment/dev/1757088442813-2025-09-05T16:07:22.813Z/appoinment.zip"
+                  "S3Key": "serverless/appoinment/dev/1757092480877-2025-09-05T17:14:40.877Z/appoinment.zip"
                 },
                 "Handler": "src/Interfaces/Workers/appointment_cl.handler",
                 "Runtime": "nodejs20.x",
@@ -350,34 +359,87 @@
                 "AppointmentUnderscoreclLogGroup"
               ]
             },
-            "AppointmentLambdaVersionB9gDcOtleCq6naXq3kQJ5UdWu4iIfp6IffTlOBYvs": {
+            "DocsLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-us-east-1-55023442-a1fe",
+                  "S3Key": "serverless/appoinment/dev/1757092480877-2025-09-05T17:14:40.877Z/appoinment.zip"
+                },
+                "Handler": "src/Interfaces/Http/docs.handler",
+                "Runtime": "nodejs20.x",
+                "FunctionName": "appoinment-dev-docs",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "Environment": {
+                  "Variables": {
+                    "DDB_TABLE": "AppointmentsTable",
+                    "APPOINTMENT_TOPIC_ARN": {
+                      "Ref": "AppointmentTopic"
+                    },
+                    "EVENT_BUS_NAME": "default",
+                    "PE_DB_HOST": "dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com",
+                    "PE_DB_PORT": "3306",
+                    "PE_DB_USER": "admin",
+                    "PE_DB_PASS": "Softtek#2023",
+                    "PE_DB_NAME": "app_pe",
+                    "CL_DB_HOST": "dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com",
+                    "CL_DB_PORT": "3306",
+                    "CL_DB_USER": "admin",
+                    "CL_DB_PASS": "Softtek#2023",
+                    "CL_DB_NAME": "app_cl",
+                    "NODE_OPTIONS": "--enable-source-maps"
+                  }
+                },
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "DocsLogGroup"
+              ]
+            },
+            "AppointmentLambdaVersionbBC7uJET9vOjsi0kpXbXq7zXg2HUn7SBJEh4Ku208": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "AppointmentLambdaFunction"
                 },
-                "CodeSha256": "6NFYzjIpiRWDH37hL6U5zo5SbXWBEnZTDbmg/DcaAZg="
+                "CodeSha256": "hvRagEKp86AdrDqHNkT+8SsEwld/bYvMoP6OS1KBIQw="
               }
             },
-            "AppointmentUnderscorepeLambdaVersionWMcIP2jaFWajK1OBmIYOudZ6a0CSAlrIL5P4Fzlw": {
+            "AppointmentUnderscorepeLambdaVersionNh0In9dlGthM1o5Y4ZVtJDnLntudaxiumTFFMCWAlwA": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "AppointmentUnderscorepeLambdaFunction"
                 },
-                "CodeSha256": "6NFYzjIpiRWDH37hL6U5zo5SbXWBEnZTDbmg/DcaAZg="
+                "CodeSha256": "hvRagEKp86AdrDqHNkT+8SsEwld/bYvMoP6OS1KBIQw="
               }
             },
-            "AppointmentUnderscoreclLambdaVersion5lAuVi4BAFZ3VfOKNvyGzvFMAnluICTLVBXy7v6o": {
+            "AppointmentUnderscoreclLambdaVersionJlBGOgIhGY0aBfMPYrJw1JKEGNgCRW2SftRDhNGa7U": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "AppointmentUnderscoreclLambdaFunction"
                 },
-                "CodeSha256": "6NFYzjIpiRWDH37hL6U5zo5SbXWBEnZTDbmg/DcaAZg="
+                "CodeSha256": "hvRagEKp86AdrDqHNkT+8SsEwld/bYvMoP6OS1KBIQw="
+              }
+            },
+            "DocsLambdaVersionUucPh8AOwqVeAWbKv6x3FGREIksPDRsNnuGK1ii3vKo": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "DocsLambdaFunction"
+                },
+                "CodeSha256": "hvRagEKp86AdrDqHNkT+8SsEwld/bYvMoP6OS1KBIQw="
               }
             },
             "AppointmentEventSourceMappingSQSConfirmationQueue": {
@@ -452,7 +514,27 @@
               "Type": "AWS::ApiGatewayV2::Api",
               "Properties": {
                 "Name": "dev-appoinment",
-                "ProtocolType": "HTTP"
+                "ProtocolType": "HTTP",
+                "CorsConfiguration": {
+                  "AllowCredentials": "<REDACTED>",
+                  "AllowHeaders": [
+                    "Content-Type",
+                    "X-Amz-Date",
+                    "Authorization",
+                    "X-Api-Key",
+                    "X-Amz-Security-Token",
+                    "X-Amz-User-Agent",
+                    "X-Amzn-Trace-Id"
+                  ],
+                  "AllowMethods": [
+                    "OPTIONS",
+                    "POST",
+                    "GET"
+                  ],
+                  "AllowOrigins": [
+                    "*"
+                  ]
+                }
               }
             },
             "HttpApiStage": {
@@ -563,6 +645,81 @@
                 }
               },
               "DependsOn": "HttpApiIntegrationAppointment"
+            },
+            "DocsLambdaPermissionHttpApi": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "DocsLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "HttpApi"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "HttpApiIntegrationDocs": {
+              "Type": "AWS::ApiGatewayV2::Integration",
+              "Properties": {
+                "ApiId": {
+                  "Ref": "HttpApi"
+                },
+                "IntegrationType": "AWS_PROXY",
+                "IntegrationUri": {
+                  "Fn::GetAtt": [
+                    "DocsLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "PayloadFormatVersion": "2.0",
+                "TimeoutInMillis": 30000
+              }
+            },
+            "HttpApiRouteGetDocs": {
+              "Type": "AWS::ApiGatewayV2::Route",
+              "Properties": {
+                "ApiId": {
+                  "Ref": "HttpApi"
+                },
+                "RouteKey": "GET /docs",
+                "Target": {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      "integrations",
+                      {
+                        "Ref": "HttpApiIntegrationDocs"
+                      }
+                    ]
+                  ]
+                }
+              },
+              "DependsOn": "HttpApiIntegrationDocs"
             },
             "AppointmentsTable": {
               "Type": "AWS::DynamoDB::Table",
@@ -800,7 +957,7 @@
             "AppointmentLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "AppointmentLambdaVersionB9gDcOtleCq6naXq3kQJ5UdWu4iIfp6IffTlOBYvs"
+                "Ref": "AppointmentLambdaVersionbBC7uJET9vOjsi0kpXbXq7zXg2HUn7SBJEh4Ku208"
               },
               "Export": {
                 "Name": "sls-appoinment-dev-AppointmentLambdaFunctionQualifiedArn"
@@ -809,7 +966,7 @@
             "AppointmentUnderscorepeLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "AppointmentUnderscorepeLambdaVersionWMcIP2jaFWajK1OBmIYOudZ6a0CSAlrIL5P4Fzlw"
+                "Ref": "AppointmentUnderscorepeLambdaVersionNh0In9dlGthM1o5Y4ZVtJDnLntudaxiumTFFMCWAlwA"
               },
               "Export": {
                 "Name": "sls-appoinment-dev-AppointmentUnderscorepeLambdaFunctionQualifiedArn"
@@ -818,10 +975,19 @@
             "AppointmentUnderscoreclLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "AppointmentUnderscoreclLambdaVersion5lAuVi4BAFZ3VfOKNvyGzvFMAnluICTLVBXy7v6o"
+                "Ref": "AppointmentUnderscoreclLambdaVersionJlBGOgIhGY0aBfMPYrJw1JKEGNgCRW2SftRDhNGa7U"
               },
               "Export": {
                 "Name": "sls-appoinment-dev-AppointmentUnderscoreclLambdaFunctionQualifiedArn"
+              }
+            },
+            "DocsLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "DocsLambdaVersionUucPh8AOwqVeAWbKv6x3FGREIksPDRsNnuGK1ii3vKo"
+              },
+              "Export": {
+                "Name": "sls-appoinment-dev-DocsLambdaFunctionQualifiedArn"
               }
             },
             "HttpApiId": {
@@ -906,7 +1072,7 @@
           "timeout": 6,
           "runtime": "nodejs20.x",
           "vpc": {},
-          "versionLogicalId": "AppointmentLambdaVersionB9gDcOtleCq6naXq3kQJ5UdWu4iIfp6IffTlOBYvs"
+          "versionLogicalId": "AppointmentLambdaVersionbBC7uJET9vOjsi0kpXbXq7zXg2HUn7SBJEh4Ku208"
         },
         "appointment_pe": {
           "handler": "src/Interfaces/Workers/appointment_pe.handler",
@@ -933,7 +1099,7 @@
           "timeout": 6,
           "runtime": "nodejs20.x",
           "vpc": {},
-          "versionLogicalId": "AppointmentUnderscorepeLambdaVersionWMcIP2jaFWajK1OBmIYOudZ6a0CSAlrIL5P4Fzlw"
+          "versionLogicalId": "AppointmentUnderscorepeLambdaVersionNh0In9dlGthM1o5Y4ZVtJDnLntudaxiumTFFMCWAlwA"
         },
         "appointment_cl": {
           "handler": "src/Interfaces/Workers/appointment_cl.handler",
@@ -960,7 +1126,30 @@
           "timeout": 6,
           "runtime": "nodejs20.x",
           "vpc": {},
-          "versionLogicalId": "AppointmentUnderscoreclLambdaVersion5lAuVi4BAFZ3VfOKNvyGzvFMAnluICTLVBXy7v6o"
+          "versionLogicalId": "AppointmentUnderscoreclLambdaVersionJlBGOgIhGY0aBfMPYrJw1JKEGNgCRW2SftRDhNGa7U"
+        },
+        "docs": {
+          "handler": "src/Interfaces/Http/docs.handler",
+          "events": [
+            {
+              "httpApi": {
+                "path": "/docs",
+                "method": "get"
+              },
+              "resolvedMethod": "GET",
+              "resolvedPath": "/docs"
+            }
+          ],
+          "name": "appoinment-dev-docs",
+          "environment": {
+            "NODE_OPTIONS": "--enable-source-maps"
+          },
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "nodejs20.x",
+          "vpc": {},
+          "versionLogicalId": "DocsLambdaVersionUucPh8AOwqVeAWbKv6x3FGREIksPDRsNnuGK1ii3vKo"
         }
       },
       "resources": {
@@ -1198,6 +1387,9 @@
       "name": "aws",
       "runtime": "nodejs20.x",
       "region": "us-east-1",
+      "httpApi": {
+        "cors": true
+      },
       "environment": {
         "DDB_TABLE": "AppointmentsTable",
         "APPOINTMENT_TOPIC_ARN": {
@@ -1272,6 +1464,12 @@
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
               "LogGroupName": "/aws/lambda/appoinment-dev-appointment_cl"
+            }
+          },
+          "DocsLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/appoinment-dev-docs"
             }
           },
           "IamRoleLambdaExecution": {
@@ -1414,7 +1612,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-framework-deployments-us-east-1-55023442-a1fe",
-                "S3Key": "serverless/appoinment/dev/1757088442813-2025-09-05T16:07:22.813Z/appoinment.zip"
+                "S3Key": "serverless/appoinment/dev/1757092480877-2025-09-05T17:14:40.877Z/appoinment.zip"
               },
               "Handler": "src/Interfaces/Http/appointment.router",
               "Runtime": "nodejs20.x",
@@ -1457,7 +1655,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-framework-deployments-us-east-1-55023442-a1fe",
-                "S3Key": "serverless/appoinment/dev/1757088442813-2025-09-05T16:07:22.813Z/appoinment.zip"
+                "S3Key": "serverless/appoinment/dev/1757092480877-2025-09-05T17:14:40.877Z/appoinment.zip"
               },
               "Handler": "src/Interfaces/Workers/appointment_pe.handler",
               "Runtime": "nodejs20.x",
@@ -1500,7 +1698,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-framework-deployments-us-east-1-55023442-a1fe",
-                "S3Key": "serverless/appoinment/dev/1757088442813-2025-09-05T16:07:22.813Z/appoinment.zip"
+                "S3Key": "serverless/appoinment/dev/1757092480877-2025-09-05T17:14:40.877Z/appoinment.zip"
               },
               "Handler": "src/Interfaces/Workers/appointment_cl.handler",
               "Runtime": "nodejs20.x",
@@ -1538,34 +1736,87 @@
               "AppointmentUnderscoreclLogGroup"
             ]
           },
-          "AppointmentLambdaVersionB9gDcOtleCq6naXq3kQJ5UdWu4iIfp6IffTlOBYvs": {
+          "DocsLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-us-east-1-55023442-a1fe",
+                "S3Key": "serverless/appoinment/dev/1757092480877-2025-09-05T17:14:40.877Z/appoinment.zip"
+              },
+              "Handler": "src/Interfaces/Http/docs.handler",
+              "Runtime": "nodejs20.x",
+              "FunctionName": "appoinment-dev-docs",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "DDB_TABLE": "AppointmentsTable",
+                  "APPOINTMENT_TOPIC_ARN": {
+                    "Ref": "AppointmentTopic"
+                  },
+                  "EVENT_BUS_NAME": "default",
+                  "PE_DB_HOST": "dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com",
+                  "PE_DB_PORT": "3306",
+                  "PE_DB_USER": "admin",
+                  "PE_DB_PASS": "Softtek#2023",
+                  "PE_DB_NAME": "app_pe",
+                  "CL_DB_HOST": "dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com",
+                  "CL_DB_PORT": "3306",
+                  "CL_DB_USER": "admin",
+                  "CL_DB_PASS": "Softtek#2023",
+                  "CL_DB_NAME": "app_cl",
+                  "NODE_OPTIONS": "--enable-source-maps"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "DocsLogGroup"
+            ]
+          },
+          "AppointmentLambdaVersionbBC7uJET9vOjsi0kpXbXq7zXg2HUn7SBJEh4Ku208": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AppointmentLambdaFunction"
               },
-              "CodeSha256": "6NFYzjIpiRWDH37hL6U5zo5SbXWBEnZTDbmg/DcaAZg="
+              "CodeSha256": "hvRagEKp86AdrDqHNkT+8SsEwld/bYvMoP6OS1KBIQw="
             }
           },
-          "AppointmentUnderscorepeLambdaVersionWMcIP2jaFWajK1OBmIYOudZ6a0CSAlrIL5P4Fzlw": {
+          "AppointmentUnderscorepeLambdaVersionNh0In9dlGthM1o5Y4ZVtJDnLntudaxiumTFFMCWAlwA": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AppointmentUnderscorepeLambdaFunction"
               },
-              "CodeSha256": "6NFYzjIpiRWDH37hL6U5zo5SbXWBEnZTDbmg/DcaAZg="
+              "CodeSha256": "hvRagEKp86AdrDqHNkT+8SsEwld/bYvMoP6OS1KBIQw="
             }
           },
-          "AppointmentUnderscoreclLambdaVersion5lAuVi4BAFZ3VfOKNvyGzvFMAnluICTLVBXy7v6o": {
+          "AppointmentUnderscoreclLambdaVersionJlBGOgIhGY0aBfMPYrJw1JKEGNgCRW2SftRDhNGa7U": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AppointmentUnderscoreclLambdaFunction"
               },
-              "CodeSha256": "6NFYzjIpiRWDH37hL6U5zo5SbXWBEnZTDbmg/DcaAZg="
+              "CodeSha256": "hvRagEKp86AdrDqHNkT+8SsEwld/bYvMoP6OS1KBIQw="
+            }
+          },
+          "DocsLambdaVersionUucPh8AOwqVeAWbKv6x3FGREIksPDRsNnuGK1ii3vKo": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "DocsLambdaFunction"
+              },
+              "CodeSha256": "hvRagEKp86AdrDqHNkT+8SsEwld/bYvMoP6OS1KBIQw="
             }
           },
           "AppointmentEventSourceMappingSQSConfirmationQueue": {
@@ -1640,7 +1891,27 @@
             "Type": "AWS::ApiGatewayV2::Api",
             "Properties": {
               "Name": "dev-appoinment",
-              "ProtocolType": "HTTP"
+              "ProtocolType": "HTTP",
+              "CorsConfiguration": {
+                "AllowCredentials": "<REDACTED>",
+                "AllowHeaders": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent",
+                  "X-Amzn-Trace-Id"
+                ],
+                "AllowMethods": [
+                  "OPTIONS",
+                  "POST",
+                  "GET"
+                ],
+                "AllowOrigins": [
+                  "*"
+                ]
+              }
             }
           },
           "HttpApiStage": {
@@ -1751,6 +2022,81 @@
               }
             },
             "DependsOn": "HttpApiIntegrationAppointment"
+          },
+          "DocsLambdaPermissionHttpApi": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "DocsLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "HttpApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "HttpApiIntegrationDocs": {
+            "Type": "AWS::ApiGatewayV2::Integration",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "IntegrationType": "AWS_PROXY",
+              "IntegrationUri": {
+                "Fn::GetAtt": [
+                  "DocsLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "PayloadFormatVersion": "2.0",
+              "TimeoutInMillis": 30000
+            }
+          },
+          "HttpApiRouteGetDocs": {
+            "Type": "AWS::ApiGatewayV2::Route",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "RouteKey": "GET /docs",
+              "Target": {
+                "Fn::Join": [
+                  "/",
+                  [
+                    "integrations",
+                    {
+                      "Ref": "HttpApiIntegrationDocs"
+                    }
+                  ]
+                ]
+              }
+            },
+            "DependsOn": "HttpApiIntegrationDocs"
           },
           "AppointmentsTable": {
             "Type": "AWS::DynamoDB::Table",
@@ -1988,7 +2334,7 @@
           "AppointmentLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AppointmentLambdaVersionB9gDcOtleCq6naXq3kQJ5UdWu4iIfp6IffTlOBYvs"
+              "Ref": "AppointmentLambdaVersionbBC7uJET9vOjsi0kpXbXq7zXg2HUn7SBJEh4Ku208"
             },
             "Export": {
               "Name": "sls-appoinment-dev-AppointmentLambdaFunctionQualifiedArn"
@@ -1997,7 +2343,7 @@
           "AppointmentUnderscorepeLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AppointmentUnderscorepeLambdaVersionWMcIP2jaFWajK1OBmIYOudZ6a0CSAlrIL5P4Fzlw"
+              "Ref": "AppointmentUnderscorepeLambdaVersionNh0In9dlGthM1o5Y4ZVtJDnLntudaxiumTFFMCWAlwA"
             },
             "Export": {
               "Name": "sls-appoinment-dev-AppointmentUnderscorepeLambdaFunctionQualifiedArn"
@@ -2006,10 +2352,19 @@
           "AppointmentUnderscoreclLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AppointmentUnderscoreclLambdaVersion5lAuVi4BAFZ3VfOKNvyGzvFMAnluICTLVBXy7v6o"
+              "Ref": "AppointmentUnderscoreclLambdaVersionJlBGOgIhGY0aBfMPYrJw1JKEGNgCRW2SftRDhNGa7U"
             },
             "Export": {
               "Name": "sls-appoinment-dev-AppointmentUnderscoreclLambdaFunctionQualifiedArn"
+            }
+          },
+          "DocsLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "DocsLambdaVersionUucPh8AOwqVeAWbKv6x3FGREIksPDRsNnuGK1ii3vKo"
+            },
+            "Export": {
+              "Name": "sls-appoinment-dev-DocsLambdaFunctionQualifiedArn"
             }
           },
           "HttpApiId": {
@@ -2059,7 +2414,7 @@
       "serviceProvider": null,
       "instanceParameters": null
     },
-    "serviceRawFile": "org: myorgluis\nservice: appoinment\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  region: us-east-1\n  environment:\n    DDB_TABLE: AppointmentsTable\n    APPOINTMENT_TOPIC_ARN: !Ref AppointmentTopic  \n    EVENT_BUS_NAME: default\n    # --- Conexión a MySQL para Perú\n    PE_DB_HOST: dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com\n    PE_DB_PORT: \"3306\"\n    PE_DB_USER: admin\n    PE_DB_PASS: \"Softtek#2023\"\n    PE_DB_NAME: app_pe\n\n    # --- Conexión a MySQL para Chile ---\n    CL_DB_HOST: dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com\n    CL_DB_PORT: \"3306\"\n    CL_DB_USER: admin\n    CL_DB_PASS: \"Softtek#2023\"\n    CL_DB_NAME: app_cl\n  iam:\n    role:\n      statements:\n        # DynamoDB\n        - Effect: Allow\n          Action:\n            - dynamodb:PutItem\n            - dynamodb:UpdateItem\n            - dynamodb:GetItem\n            - dynamodb:Query\n          Resource:\n            - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/AppointmentsTable\n            - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/AppointmentsTable/index/InsuredGSI\n        # SNS\n        - Effect: Allow\n          Action: sns:Publish\n          Resource: !Ref AppointmentTopic\n        \n        # EventBridge\n        - Effect: Allow\n          Action: events:PutEvents\n          Resource: \"*\"\n\nplugins:\n  - serverless-offline\n\nfunctions:\n  appointment:\n    handler: src/Interfaces/Http/appointment.router\n    events:\n      - httpApi:\n          path: /appointments\n          method: post\n      - httpApi:\n          path: /appointments/{insuredId}\n          method: get\n      - sqs:\n          arn: { Fn::GetAtt: [ ConfirmationQueue, Arn ] }\n          batchSize: 1\n  appointment_pe:\n    handler: src/Interfaces/Workers/appointment_pe.handler\n    events:\n      - sqs:\n          arn: { Fn::GetAtt: [ SqsPE, Arn ] }\n          batchSize: 1\n          maximumBatchingWindow: 0\n  appointment_cl:\n    handler: src/Interfaces/Workers/appointment_cl.handler\n    events:\n      - sqs:\n          arn: { Fn::GetAtt: [ SqsCL, Arn ] }\n          batchSize: 1\n          maximumBatchingWindow: 0\n\nresources:\n  Resources:\n    # DynamoDB\n    AppointmentsTable:\n      Type: AWS::DynamoDB::Table\n      Properties:\n        TableName: AppointmentsTable\n        BillingMode: PAY_PER_REQUEST\n        AttributeDefinitions:\n          - AttributeName: appointmentId\n            AttributeType: S\n          - AttributeName: insuredId\n            AttributeType: S\n        KeySchema:\n          - AttributeName: appointmentId\n            KeyType: HASH\n        GlobalSecondaryIndexes:\n          - IndexName: InsuredGSI\n            KeySchema:\n              - AttributeName: insuredId\n                KeyType: HASH\n            Projection:\n              ProjectionType: ALL\n\n    # SNS Topic\n    AppointmentTopic:\n      Type: AWS::SNS::Topic\n      Properties:\n        TopicName: appointment-topic\n\n    # --- SQS por país ---\n    SqsPE:\n      Type: AWS::SQS::Queue\n      Properties:\n        QueueName: SQS_PE\n\n    SqsCL:\n      Type: AWS::SQS::Queue\n      Properties:\n        QueueName: SQS_CL\n\n    # --- Suscripciones SNS -> SQS con filtro por countryISO ---\n    SnsSubPE:\n      Type: AWS::SNS::Subscription\n      Properties:\n        TopicArn: !Ref AppointmentTopic\n        Protocol: sqs\n        Endpoint: !GetAtt SqsPE.Arn\n        FilterPolicy:\n          countryISO: [ \"PE\" ]\n\n    SnsSubCL:\n      Type: AWS::SNS::Subscription\n      Properties:\n        TopicArn: !Ref AppointmentTopic\n        Protocol: sqs\n        Endpoint: !GetAtt SqsCL.Arn\n        FilterPolicy:\n          countryISO: [ \"CL\" ]\n\n    # --- Policies para permitir a SNS enviar a SQS ---\n    SqsPEPolicy:\n      Type: AWS::SQS::QueuePolicy\n      Properties:\n        Queues: [ !Ref SqsPE ]\n        PolicyDocument:\n          Version: '2012-10-17'\n          Statement:\n            - Effect: Allow\n              Principal: { Service: sns.amazonaws.com }\n              Action: SQS:SendMessage\n              Resource: !GetAtt SqsPE.Arn\n              Condition:\n                ArnEquals:\n                  aws:SourceArn: !Ref AppointmentTopic\n\n    SqsCLPolicy:\n      Type: AWS::SQS::QueuePolicy\n      Properties:\n        Queues: [ !Ref SqsCL ]\n        PolicyDocument:\n          Version: '2012-10-17'\n          Statement:\n            - Effect: Allow\n              Principal: { Service: sns.amazonaws.com }\n              Action: SQS:SendMessage\n              Resource: !GetAtt SqsCL.Arn\n              Condition:\n                ArnEquals:\n                  aws:SourceArn: !Ref AppointmentTopic\n              \n    ConfirmationQueue:\n      Type: AWS::SQS::Queue\n      Properties: { QueueName: SQS_CONFIRMATION }\n\n    AppointmentConfirmedRule:\n      Type: AWS::Events::Rule\n      Properties:\n        Name: appointment-confirmed-rule\n        EventBusName: default\n        EventPattern:\n          source: [ \"rimac.appointment\" ]\n          detail-type: [ \"AppointmentConfirmed\" ]\n        Targets:\n          - Arn: !GetAtt ConfirmationQueue.Arn\n            Id: ConfirmationTarget\n\n    ConfirmationQueuePolicy:\n      Type: AWS::SQS::QueuePolicy\n      Properties:\n        Queues: [ !Ref ConfirmationQueue ]\n        PolicyDocument:\n          Version: '2012-10-17'\n          Statement:\n            - Effect: Allow\n              Principal: { Service: events.amazonaws.com }\n              Action: SQS:SendMessage\n              Resource: !GetAtt ConfirmationQueue.Arn",
+    "serviceRawFile": "org: myorgluis\nservice: appoinment\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  region: us-east-1\n  httpApi:\n    cors: true\n  environment:\n    DDB_TABLE: AppointmentsTable\n    APPOINTMENT_TOPIC_ARN: !Ref AppointmentTopic  \n    EVENT_BUS_NAME: default\n    # --- Conexión a MySQL para Perú\n    PE_DB_HOST: dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com\n    PE_DB_PORT: \"3306\"\n    PE_DB_USER: admin\n    PE_DB_PASS: \"Softtek#2023\"\n    PE_DB_NAME: app_pe\n\n    # --- Conexión a MySQL para Chile ---\n    CL_DB_HOST: dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com\n    CL_DB_PORT: \"3306\"\n    CL_DB_USER: admin\n    CL_DB_PASS: \"Softtek#2023\"\n    CL_DB_NAME: app_cl\n  iam:\n    role:\n      statements:\n        # DynamoDB\n        - Effect: Allow\n          Action:\n            - dynamodb:PutItem\n            - dynamodb:UpdateItem\n            - dynamodb:GetItem\n            - dynamodb:Query\n          Resource:\n            - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/AppointmentsTable\n            - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/AppointmentsTable/index/InsuredGSI\n        # SNS\n        - Effect: Allow\n          Action: sns:Publish\n          Resource: !Ref AppointmentTopic\n        \n        # EventBridge\n        - Effect: Allow\n          Action: events:PutEvents\n          Resource: \"*\"\n\nplugins:\n  - serverless-offline\n\nfunctions:\n  appointment:\n    handler: src/Interfaces/Http/appointment.router\n    events:\n      - httpApi:\n          path: /appointments\n          method: post\n      - httpApi:\n          path: /appointments/{insuredId}\n          method: get\n      - sqs:\n          arn: { Fn::GetAtt: [ ConfirmationQueue, Arn ] }\n          batchSize: 1\n  appointment_pe:\n    handler: src/Interfaces/Workers/appointment_pe.handler\n    events:\n      - sqs:\n          arn: { Fn::GetAtt: [ SqsPE, Arn ] }\n          batchSize: 1\n          maximumBatchingWindow: 0\n  appointment_cl:\n    handler: src/Interfaces/Workers/appointment_cl.handler\n    events:\n      - sqs:\n          arn: { Fn::GetAtt: [ SqsCL, Arn ] }\n          batchSize: 1\n          maximumBatchingWindow: 0\n  docs:\n    handler: src/Interfaces/Http/docs.handler\n    events:\n      - httpApi:\n          path: /docs\n          method: get  \n\nresources:\n  Resources:\n    # DynamoDB\n    AppointmentsTable:\n      Type: AWS::DynamoDB::Table\n      Properties:\n        TableName: AppointmentsTable\n        BillingMode: PAY_PER_REQUEST\n        AttributeDefinitions:\n          - AttributeName: appointmentId\n            AttributeType: S\n          - AttributeName: insuredId\n            AttributeType: S\n        KeySchema:\n          - AttributeName: appointmentId\n            KeyType: HASH\n        GlobalSecondaryIndexes:\n          - IndexName: InsuredGSI\n            KeySchema:\n              - AttributeName: insuredId\n                KeyType: HASH\n            Projection:\n              ProjectionType: ALL\n\n    # SNS Topic\n    AppointmentTopic:\n      Type: AWS::SNS::Topic\n      Properties:\n        TopicName: appointment-topic\n\n    # --- SQS por país ---\n    SqsPE:\n      Type: AWS::SQS::Queue\n      Properties:\n        QueueName: SQS_PE\n\n    SqsCL:\n      Type: AWS::SQS::Queue\n      Properties:\n        QueueName: SQS_CL\n\n    # --- Suscripciones SNS -> SQS con filtro por countryISO ---\n    SnsSubPE:\n      Type: AWS::SNS::Subscription\n      Properties:\n        TopicArn: !Ref AppointmentTopic\n        Protocol: sqs\n        Endpoint: !GetAtt SqsPE.Arn\n        FilterPolicy:\n          countryISO: [ \"PE\" ]\n\n    SnsSubCL:\n      Type: AWS::SNS::Subscription\n      Properties:\n        TopicArn: !Ref AppointmentTopic\n        Protocol: sqs\n        Endpoint: !GetAtt SqsCL.Arn\n        FilterPolicy:\n          countryISO: [ \"CL\" ]\n\n    # --- Policies para permitir a SNS enviar a SQS ---\n    SqsPEPolicy:\n      Type: AWS::SQS::QueuePolicy\n      Properties:\n        Queues: [ !Ref SqsPE ]\n        PolicyDocument:\n          Version: '2012-10-17'\n          Statement:\n            - Effect: Allow\n              Principal: { Service: sns.amazonaws.com }\n              Action: SQS:SendMessage\n              Resource: !GetAtt SqsPE.Arn\n              Condition:\n                ArnEquals:\n                  aws:SourceArn: !Ref AppointmentTopic\n\n    SqsCLPolicy:\n      Type: AWS::SQS::QueuePolicy\n      Properties:\n        Queues: [ !Ref SqsCL ]\n        PolicyDocument:\n          Version: '2012-10-17'\n          Statement:\n            - Effect: Allow\n              Principal: { Service: sns.amazonaws.com }\n              Action: SQS:SendMessage\n              Resource: !GetAtt SqsCL.Arn\n              Condition:\n                ArnEquals:\n                  aws:SourceArn: !Ref AppointmentTopic\n              \n    ConfirmationQueue:\n      Type: AWS::SQS::Queue\n      Properties: { QueueName: SQS_CONFIRMATION }\n\n    AppointmentConfirmedRule:\n      Type: AWS::Events::Rule\n      Properties:\n        Name: appointment-confirmed-rule\n        EventBusName: default\n        EventPattern:\n          source: [ \"rimac.appointment\" ]\n          detail-type: [ \"AppointmentConfirmed\" ]\n        Targets:\n          - Arn: !GetAtt ConfirmationQueue.Arn\n            Id: ConfirmationTarget\n\n    ConfirmationQueuePolicy:\n      Type: AWS::SQS::QueuePolicy\n      Properties:\n        Queues: [ !Ref ConfirmationQueue ]\n        PolicyDocument:\n          Version: '2012-10-17'\n          Statement:\n            - Effect: Allow\n              Principal: { Service: events.amazonaws.com }\n              Action: SQS:SendMessage\n              Resource: !GetAtt ConfirmationQueue.Arn",
     "command": [
       "deploy"
     ],
@@ -2072,24 +2427,30 @@
     "serviceProviderAwsCfStackName": "appoinment-dev",
     "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:157051741410:stack/appoinment-dev/9c757440-8a08-11f0-8714-0affe917e6ad",
     "serviceProviderAwsCfStackCreated": "2025-09-05T03:30:03.935Z",
-    "serviceProviderAwsCfStackUpdated": "2025-09-05T05:26:38.630Z",
+    "serviceProviderAwsCfStackUpdated": "2025-09-05T17:07:09.308Z",
     "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
     "serviceProviderAwsCfStackOutputs": [
       {
         "OutputKey": "AppointmentLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:157051741410:function:appoinment-dev-appointment:5",
+        "OutputValue": "arn:aws:lambda:us-east-1:157051741410:function:appoinment-dev-appointment:7",
         "Description": "Current Lambda function version",
         "ExportName": "sls-appoinment-dev-AppointmentLambdaFunctionQualifiedArn"
       },
       {
         "OutputKey": "AppointmentUnderscoreclLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:157051741410:function:appoinment-dev-appointment_cl:2",
+        "OutputValue": "arn:aws:lambda:us-east-1:157051741410:function:appoinment-dev-appointment_cl:4",
         "Description": "Current Lambda function version",
         "ExportName": "sls-appoinment-dev-AppointmentUnderscoreclLambdaFunctionQualifiedArn"
       },
       {
+        "OutputKey": "DocsLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:157051741410:function:appoinment-dev-docs:1",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-appoinment-dev-DocsLambdaFunctionQualifiedArn"
+      },
+      {
         "OutputKey": "AppointmentUnderscorepeLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:157051741410:function:appoinment-dev-appointment_pe:2",
+        "OutputValue": "arn:aws:lambda:us-east-1:157051741410:function:appoinment-dev-appointment_pe:4",
         "Description": "Current Lambda function version",
         "ExportName": "sls-appoinment-dev-AppointmentUnderscorepeLambdaFunctionQualifiedArn"
       },
@@ -2131,6 +2492,12 @@
           "Type": "AWS::Logs::LogGroup",
           "Properties": {
             "LogGroupName": "/aws/lambda/appoinment-dev-appointment_cl"
+          }
+        },
+        "DocsLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/appoinment-dev-docs"
           }
         },
         "IamRoleLambdaExecution": {
@@ -2273,7 +2640,7 @@
           "Properties": {
             "Code": {
               "S3Bucket": "serverless-framework-deployments-us-east-1-55023442-a1fe",
-              "S3Key": "serverless/appoinment/dev/1757088442813-2025-09-05T16:07:22.813Z/appoinment.zip"
+              "S3Key": "serverless/appoinment/dev/1757092480877-2025-09-05T17:14:40.877Z/appoinment.zip"
             },
             "Handler": "src/Interfaces/Http/appointment.router",
             "Runtime": "nodejs20.x",
@@ -2316,7 +2683,7 @@
           "Properties": {
             "Code": {
               "S3Bucket": "serverless-framework-deployments-us-east-1-55023442-a1fe",
-              "S3Key": "serverless/appoinment/dev/1757088442813-2025-09-05T16:07:22.813Z/appoinment.zip"
+              "S3Key": "serverless/appoinment/dev/1757092480877-2025-09-05T17:14:40.877Z/appoinment.zip"
             },
             "Handler": "src/Interfaces/Workers/appointment_pe.handler",
             "Runtime": "nodejs20.x",
@@ -2359,7 +2726,7 @@
           "Properties": {
             "Code": {
               "S3Bucket": "serverless-framework-deployments-us-east-1-55023442-a1fe",
-              "S3Key": "serverless/appoinment/dev/1757088442813-2025-09-05T16:07:22.813Z/appoinment.zip"
+              "S3Key": "serverless/appoinment/dev/1757092480877-2025-09-05T17:14:40.877Z/appoinment.zip"
             },
             "Handler": "src/Interfaces/Workers/appointment_cl.handler",
             "Runtime": "nodejs20.x",
@@ -2397,34 +2764,87 @@
             "AppointmentUnderscoreclLogGroup"
           ]
         },
-        "AppointmentLambdaVersionB9gDcOtleCq6naXq3kQJ5UdWu4iIfp6IffTlOBYvs": {
+        "DocsLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-us-east-1-55023442-a1fe",
+              "S3Key": "serverless/appoinment/dev/1757092480877-2025-09-05T17:14:40.877Z/appoinment.zip"
+            },
+            "Handler": "src/Interfaces/Http/docs.handler",
+            "Runtime": "nodejs20.x",
+            "FunctionName": "appoinment-dev-docs",
+            "MemorySize": 1024,
+            "Timeout": 6,
+            "Environment": {
+              "Variables": {
+                "DDB_TABLE": "AppointmentsTable",
+                "APPOINTMENT_TOPIC_ARN": {
+                  "Ref": "AppointmentTopic"
+                },
+                "EVENT_BUS_NAME": "default",
+                "PE_DB_HOST": "dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com",
+                "PE_DB_PORT": "3306",
+                "PE_DB_USER": "admin",
+                "PE_DB_PASS": "Softtek#2023",
+                "PE_DB_NAME": "app_pe",
+                "CL_DB_HOST": "dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com",
+                "CL_DB_PORT": "3306",
+                "CL_DB_USER": "admin",
+                "CL_DB_PASS": "Softtek#2023",
+                "CL_DB_NAME": "app_cl",
+                "NODE_OPTIONS": "--enable-source-maps"
+              }
+            },
+            "Role": {
+              "Fn::GetAtt": [
+                "IamRoleLambdaExecution",
+                "Arn"
+              ]
+            }
+          },
+          "DependsOn": [
+            "DocsLogGroup"
+          ]
+        },
+        "AppointmentLambdaVersionbBC7uJET9vOjsi0kpXbXq7zXg2HUn7SBJEh4Ku208": {
           "Type": "AWS::Lambda::Version",
           "DeletionPolicy": "Retain",
           "Properties": {
             "FunctionName": {
               "Ref": "AppointmentLambdaFunction"
             },
-            "CodeSha256": "6NFYzjIpiRWDH37hL6U5zo5SbXWBEnZTDbmg/DcaAZg="
+            "CodeSha256": "hvRagEKp86AdrDqHNkT+8SsEwld/bYvMoP6OS1KBIQw="
           }
         },
-        "AppointmentUnderscorepeLambdaVersionWMcIP2jaFWajK1OBmIYOudZ6a0CSAlrIL5P4Fzlw": {
+        "AppointmentUnderscorepeLambdaVersionNh0In9dlGthM1o5Y4ZVtJDnLntudaxiumTFFMCWAlwA": {
           "Type": "AWS::Lambda::Version",
           "DeletionPolicy": "Retain",
           "Properties": {
             "FunctionName": {
               "Ref": "AppointmentUnderscorepeLambdaFunction"
             },
-            "CodeSha256": "6NFYzjIpiRWDH37hL6U5zo5SbXWBEnZTDbmg/DcaAZg="
+            "CodeSha256": "hvRagEKp86AdrDqHNkT+8SsEwld/bYvMoP6OS1KBIQw="
           }
         },
-        "AppointmentUnderscoreclLambdaVersion5lAuVi4BAFZ3VfOKNvyGzvFMAnluICTLVBXy7v6o": {
+        "AppointmentUnderscoreclLambdaVersionJlBGOgIhGY0aBfMPYrJw1JKEGNgCRW2SftRDhNGa7U": {
           "Type": "AWS::Lambda::Version",
           "DeletionPolicy": "Retain",
           "Properties": {
             "FunctionName": {
               "Ref": "AppointmentUnderscoreclLambdaFunction"
             },
-            "CodeSha256": "6NFYzjIpiRWDH37hL6U5zo5SbXWBEnZTDbmg/DcaAZg="
+            "CodeSha256": "hvRagEKp86AdrDqHNkT+8SsEwld/bYvMoP6OS1KBIQw="
+          }
+        },
+        "DocsLambdaVersionUucPh8AOwqVeAWbKv6x3FGREIksPDRsNnuGK1ii3vKo": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "DocsLambdaFunction"
+            },
+            "CodeSha256": "hvRagEKp86AdrDqHNkT+8SsEwld/bYvMoP6OS1KBIQw="
           }
         },
         "AppointmentEventSourceMappingSQSConfirmationQueue": {
@@ -2499,7 +2919,26 @@
           "Type": "AWS::ApiGatewayV2::Api",
           "Properties": {
             "Name": "dev-appoinment",
-            "ProtocolType": "HTTP"
+            "ProtocolType": "HTTP",
+            "CorsConfiguration": {
+              "AllowHeaders": [
+                "Content-Type",
+                "X-Amz-Date",
+                "Authorization",
+                "X-Api-Key",
+                "X-Amz-Security-Token",
+                "X-Amz-User-Agent",
+                "X-Amzn-Trace-Id"
+              ],
+              "AllowMethods": [
+                "OPTIONS",
+                "POST",
+                "GET"
+              ],
+              "AllowOrigins": [
+                "*"
+              ]
+            }
           }
         },
         "HttpApiStage": {
@@ -2610,6 +3049,81 @@
             }
           },
           "DependsOn": "HttpApiIntegrationAppointment"
+        },
+        "DocsLambdaPermissionHttpApi": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "DocsLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Action": "lambda:InvokeFunction",
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "HttpApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
+        "HttpApiIntegrationDocs": {
+          "Type": "AWS::ApiGatewayV2::Integration",
+          "Properties": {
+            "ApiId": {
+              "Ref": "HttpApi"
+            },
+            "IntegrationType": "AWS_PROXY",
+            "IntegrationUri": {
+              "Fn::GetAtt": [
+                "DocsLambdaFunction",
+                "Arn"
+              ]
+            },
+            "PayloadFormatVersion": "2.0",
+            "TimeoutInMillis": 30000
+          }
+        },
+        "HttpApiRouteGetDocs": {
+          "Type": "AWS::ApiGatewayV2::Route",
+          "Properties": {
+            "ApiId": {
+              "Ref": "HttpApi"
+            },
+            "RouteKey": "GET /docs",
+            "Target": {
+              "Fn::Join": [
+                "/",
+                [
+                  "integrations",
+                  {
+                    "Ref": "HttpApiIntegrationDocs"
+                  }
+                ]
+              ]
+            }
+          },
+          "DependsOn": "HttpApiIntegrationDocs"
         },
         "AppointmentsTable": {
           "Type": "AWS::DynamoDB::Table",
@@ -2847,7 +3361,7 @@
         "AppointmentLambdaFunctionQualifiedArn": {
           "Description": "Current Lambda function version",
           "Value": {
-            "Ref": "AppointmentLambdaVersionB9gDcOtleCq6naXq3kQJ5UdWu4iIfp6IffTlOBYvs"
+            "Ref": "AppointmentLambdaVersionbBC7uJET9vOjsi0kpXbXq7zXg2HUn7SBJEh4Ku208"
           },
           "Export": {
             "Name": "sls-appoinment-dev-AppointmentLambdaFunctionQualifiedArn"
@@ -2856,7 +3370,7 @@
         "AppointmentUnderscorepeLambdaFunctionQualifiedArn": {
           "Description": "Current Lambda function version",
           "Value": {
-            "Ref": "AppointmentUnderscorepeLambdaVersionWMcIP2jaFWajK1OBmIYOudZ6a0CSAlrIL5P4Fzlw"
+            "Ref": "AppointmentUnderscorepeLambdaVersionNh0In9dlGthM1o5Y4ZVtJDnLntudaxiumTFFMCWAlwA"
           },
           "Export": {
             "Name": "sls-appoinment-dev-AppointmentUnderscorepeLambdaFunctionQualifiedArn"
@@ -2865,10 +3379,19 @@
         "AppointmentUnderscoreclLambdaFunctionQualifiedArn": {
           "Description": "Current Lambda function version",
           "Value": {
-            "Ref": "AppointmentUnderscoreclLambdaVersion5lAuVi4BAFZ3VfOKNvyGzvFMAnluICTLVBXy7v6o"
+            "Ref": "AppointmentUnderscoreclLambdaVersionJlBGOgIhGY0aBfMPYrJw1JKEGNgCRW2SftRDhNGa7U"
           },
           "Export": {
             "Name": "sls-appoinment-dev-AppointmentUnderscoreclLambdaFunctionQualifiedArn"
+          }
+        },
+        "DocsLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "DocsLambdaVersionUucPh8AOwqVeAWbKv6x3FGREIksPDRsNnuGK1ii3vKo"
+          },
+          "Export": {
+            "Name": "sls-appoinment-dev-DocsLambdaFunctionQualifiedArn"
           }
         },
         "HttpApiId": {

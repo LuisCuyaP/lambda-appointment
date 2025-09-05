@@ -5,6 +5,8 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
+  httpApi:
+    cors: true
   environment:
     DDB_TABLE: AppointmentsTable
     APPOINTMENT_TOPIC_ARN: !Ref AppointmentTopic  
@@ -75,6 +77,12 @@ functions:
           arn: { Fn::GetAtt: [ SqsCL, Arn ] }
           batchSize: 1
           maximumBatchingWindow: 0
+  docs:
+    handler: src/Interfaces/Http/docs.handler
+    events:
+      - httpApi:
+          path: /docs
+          method: get  
 
 resources:
   Resources:
