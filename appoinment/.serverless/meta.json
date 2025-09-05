@@ -1,0 +1,71 @@
+{
+  "C:\\Repositorios\\serverless\\appoinment\\serverless.yml": {
+    "versionFramework": "4.18.2",
+    "servicePath": "C:\\Repositorios\\serverless\\appoinment\\serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "org": "myorgluis",
+      "service": "appoinment",
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs20.x",
+        "stage": "dev",
+        "region": "us-east-1",
+        "versionFunctions": true
+      },
+      "plugins": [
+        "serverless-esbuild",
+        "serverless-offline"
+      ],
+      "functions": {
+        "hello": {
+          "handler": "src/functions/hello.handler",
+          "events": [
+            {
+              "httpApi": {
+                "path": "/",
+                "method": "get"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "nodejs20.x",
+      "stage": "dev",
+      "region": "us-east-1",
+      "versionFunctions": true
+    },
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "error": {
+      "message": "Serverless now includes ESBuild and supports Typescript out-of-the-box. But this conflicts with the plugin 'serverless-esbuild'.\nYou can either remove this plugin and try Serverless's ESBuild support builtin, or you can set 'build.esbuild' to false in your 'serverless.yml'.\nFor more information go to, https://slss.io/buildoptions",
+      "stack": "ServerlessError2: Serverless now includes ESBuild and supports Typescript out-of-the-box. But this conflicts with the plugin 'serverless-esbuild'.\nYou can either remove this plugin and try Serverless's ESBuild support builtin, or you can set 'build.esbuild' to false in your 'serverless.yml'.\nFor more information go to, https://slss.io/buildoptions\n    at PluginManager.addPlugin (file:///C:/Users/luis.cuya/.serverless/releases/4.18.2/package/dist/sf-core.js:1398:65)\n    at file:///C:/Users/luis.cuya/.serverless/releases/4.18.2/package/dist/sf-core.js:1398:1734\n    at Array.forEach (<anonymous>)\n    at PluginManager.loadAllPlugins (file:///C:/Users/luis.cuya/.serverless/releases/4.18.2/package/dist/sf-core.js:1398:1712)\n    at async Serverless.init (file:///C:/Users/luis.cuya/.serverless/releases/4.18.2/package/dist/sf-core.js:1405:9843)\n    at async runFramework (file:///C:/Users/luis.cuya/.serverless/releases/4.18.2/package/dist/sf-core.js:1432:839)\n    at async TraditionalRunner.run (file:///C:/Users/luis.cuya/.serverless/releases/4.18.2/package/dist/sf-core.js:1428:28331)\n    at async route (file:///C:/Users/luis.cuya/.serverless/releases/4.18.2/package/dist/sf-core.js:1603:2878)\n    at async Object.run (file:///C:/Users/luis.cuya/.serverless/releases/4.18.2/package/dist/sf-core.js:1604:3661)\n    at async run2 (file:///C:/Users/luis.cuya/.serverless/releases/4.18.2/package/dist/sf-core.js:1604:4815)",
+      "code": "PLUGIN_TYPESCRIPT_CONFLICT"
+    },
+    "serviceRawFile": "# \"org\" ensures this Service is used with the correct Serverless Framework Access Key.\norg: myorgluis\n# \"service\" is the name of this project. This will also be added to your AWS resource names.\nservice: appoinment\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  # Uncomment to easily set up a custom domain. Read the docs for more details:\n  # https://www.serverless.com/framework/docs/providers/aws/guide/domains\n  # domain: api.example.com\n\nplugins:\n  - serverless-esbuild\n  - serverless-offline\n\nfunctions:\n  hello:\n    # handler: handler.hello\n    handler: src/functions/hello.handler\n    events:\n      - httpApi:\n          path: /\n          method: get\n",
+    "command": [
+      "offline"
+    ],
+    "options": {},
+    "orgId": "968b5760-5632-436a-9166-d8423d659e57",
+    "orgName": "myorgluis",
+    "userId": "R7zDNZQ8tPP4Dm1H65",
+    "userName": "myorgluis",
+    "serviceProviderAwsAccountId": "157051741410",
+    "serviceProviderAwsCfStackId": null,
+    "serviceProviderAwsCfStackCreated": null,
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": null,
+    "serviceProviderAwsCfStackOutputs": null
+  }
+}
