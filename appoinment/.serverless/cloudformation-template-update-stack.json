@@ -113,7 +113,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-us-east-1-55023442-a1fe",
-          "S3Key": "serverless/appoinment/dev/1757043647502-2025-09-05T03:40:47.502Z/appoinment.zip"
+          "S3Key": "serverless/appoinment/dev/1757046904612-2025-09-05T04:35:04.612Z/appoinment.zip"
         },
         "Handler": "src/Interfaces/Http/appointment.router",
         "Runtime": "nodejs20.x",
@@ -140,14 +140,14 @@
         "AppointmentLogGroup"
       ]
     },
-    "AppointmentLambdaVersionlMP67t2ObtAuGTeTA7tMY8mSiUINkdBoNTmrPszLiI": {
+    "AppointmentLambdaVersionf2Gzs6Ez72pIdDzzw3PY6nmui1PAtCk9yIq3y9Yo0": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AppointmentLambdaFunction"
         },
-        "CodeSha256": "jLL2qPYW2MbYl78IFD3tOAJr4KVEugh3W0/F1fNe9hY="
+        "CodeSha256": "ocvPweIcE9LsjNnPUvAqGJtA4RyggA280kPqvG6nS90="
       }
     },
     "HttpApi": {
@@ -308,6 +308,128 @@
       "Properties": {
         "TopicName": "appointment-topic"
       }
+    },
+    "SqsPE": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "QueueName": "SQS_PE"
+      }
+    },
+    "SqsCL": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "QueueName": "SQS_CL"
+      }
+    },
+    "SnsSubPE": {
+      "Type": "AWS::SNS::Subscription",
+      "Properties": {
+        "TopicArn": {
+          "Ref": "AppointmentTopic"
+        },
+        "Protocol": "sqs",
+        "Endpoint": {
+          "Fn::GetAtt": [
+            "SqsPE",
+            "Arn"
+          ]
+        },
+        "FilterPolicy": {
+          "countryISO": [
+            "PE"
+          ]
+        }
+      }
+    },
+    "SnsSubCL": {
+      "Type": "AWS::SNS::Subscription",
+      "Properties": {
+        "TopicArn": {
+          "Ref": "AppointmentTopic"
+        },
+        "Protocol": "sqs",
+        "Endpoint": {
+          "Fn::GetAtt": [
+            "SqsCL",
+            "Arn"
+          ]
+        },
+        "FilterPolicy": {
+          "countryISO": [
+            "CL"
+          ]
+        }
+      }
+    },
+    "SqsPEPolicy": {
+      "Type": "AWS::SQS::QueuePolicy",
+      "Properties": {
+        "Queues": [
+          {
+            "Ref": "SqsPE"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "sns.amazonaws.com"
+              },
+              "Action": "SQS:SendMessage",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "SqsPE",
+                  "Arn"
+                ]
+              },
+              "Condition": {
+                "ArnEquals": {
+                  "aws:SourceArn": {
+                    "Ref": "AppointmentTopic"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "SqsCLPolicy": {
+      "Type": "AWS::SQS::QueuePolicy",
+      "Properties": {
+        "Queues": [
+          {
+            "Ref": "SqsCL"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "sns.amazonaws.com"
+              },
+              "Action": "SQS:SendMessage",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "SqsCL",
+                  "Arn"
+                ]
+              },
+              "Condition": {
+                "ArnEquals": {
+                  "aws:SourceArn": {
+                    "Ref": "AppointmentTopic"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
     }
   },
   "Outputs": {
@@ -320,7 +442,7 @@
     "AppointmentLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AppointmentLambdaVersionlMP67t2ObtAuGTeTA7tMY8mSiUINkdBoNTmrPszLiI"
+        "Ref": "AppointmentLambdaVersionf2Gzs6Ez72pIdDzzw3PY6nmui1PAtCk9yIq3y9Yo0"
       },
       "Export": {
         "Name": "sls-appoinment-dev-AppointmentLambdaFunctionQualifiedArn"

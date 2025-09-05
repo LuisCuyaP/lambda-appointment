@@ -69,3 +69,64 @@ resources:
       Type: AWS::SNS::Topic
       Properties:
         TopicName: appointment-topic
+        
+    # --- SQS por país ---
+    SqsPE:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: SQS_PE
+
+    SqsCL:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: SQS_CL
+
+    # --- Suscripciones SNS -> SQS con filtro por countryISO ---
+    SnsSubPE:
+      Type: AWS::SNS::Subscription
+      Properties:
+        TopicArn: !Ref AppointmentTopic
+        Protocol: sqs
+        Endpoint: !GetAtt SqsPE.Arn
+        FilterPolicy:
+          countryISO: [ "PE" ]
+
+    SnsSubCL:
+      Type: AWS::SNS::Subscription
+      Properties:
+        TopicArn: !Ref AppointmentTopic
+        Protocol: sqs
+        Endpoint: !GetAtt SqsCL.Arn
+        FilterPolicy:
+          countryISO: [ "CL" ]
+
+    # --- Policies para permitir a SNS enviar a SQS ---
+    SqsPEPolicy:
+      Type: AWS::SQS::QueuePolicy
+      Properties:
+        Queues: [ !Ref SqsPE ]
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal: { Service: sns.amazonaws.com }
+              Action: SQS:SendMessage
+              Resource: !GetAtt SqsPE.Arn
+              Condition:
+                ArnEquals:
+                  aws:SourceArn: !Ref AppointmentTopic
+
+    SqsCLPolicy:
+      Type: AWS::SQS::QueuePolicy
+      Properties:
+        Queues: [ !Ref SqsCL ]
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal: { Service: sns.amazonaws.com }
+              Action: SQS:SendMessage
+              Resource: !GetAtt SqsCL.Arn
+              Condition:
+                ArnEquals:
+                  aws:SourceArn: !Ref AppointmentTopic

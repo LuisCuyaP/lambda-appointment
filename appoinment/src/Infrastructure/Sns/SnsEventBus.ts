@@ -12,18 +12,23 @@ export class SnsEventBus implements EventBus {
       console.log(`[OFFLINE] publish ${eventName}`, { payload, attributes });
       return;
     }
-    if (!TOPIC_ARN) {
-      throw new Error('APPOINTMENT_TOPIC_ARN is not set');
-    }
+    if (!TOPIC_ARN) throw new Error('APPOINTMENT_TOPIC_ARN is not set');
 
-    await this.sns.publish({
-      TopicArn: TOPIC_ARN,
-      Message: JSON.stringify(payload),
-      MessageAttributes: attributes
-        ? Object.fromEntries(
-            Object.entries(attributes).map(([k, v]) => [k, { DataType: 'String', StringValue: v }])
-          )
-        : undefined
-    }).promise();
+    const MessageAttributes = attributes
+      ? Object.fromEntries(
+          Object.entries(attributes).map(([key, value]) => [
+            key,
+            { DataType: 'String', StringValue: value },
+          ])
+        )
+      : undefined;
+
+    await this.sns
+      .publish({
+        TopicArn: TOPIC_ARN,
+        Message: JSON.stringify(payload),
+        MessageAttributes,
+      })
+      .promise();
   }
 }
