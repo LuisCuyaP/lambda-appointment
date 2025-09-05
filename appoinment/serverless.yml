@@ -9,6 +9,19 @@ provider:
     DDB_TABLE: AppointmentsTable
     APPOINTMENT_TOPIC_ARN: !Ref AppointmentTopic  
     EVENT_BUS_NAME: default
+    # --- Conexión a MySQL para Perú
+    PE_DB_HOST: dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com
+    PE_DB_PORT: "3306"
+    PE_DB_USER: admin
+    PE_DB_PASS: "Softtek#2023"
+    PE_DB_NAME: app_pe
+
+    # --- Conexión a MySQL para Chile ---
+    CL_DB_HOST: dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com
+    CL_DB_PORT: "3306"
+    CL_DB_USER: admin
+    CL_DB_PASS: "Softtek#2023"
+    CL_DB_NAME: app_cl
   iam:
     role:
       statements:

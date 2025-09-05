@@ -1,14 +1,25 @@
 import { SQSEvent } from 'aws-lambda';
 import AWS from 'aws-sdk';
+import { writeAudit } from '../../Infrastructure/MySql/MysqlAppointmentWriter';
 
 const eb = new AWS.EventBridge();
 
 export const handler = async (event: SQSEvent) => {
   for (const r of event.Records) {
     const body = JSON.parse(r.body);
-    const payload = body.Message ? JSON.parse(body.Message) : body; // SNS→SQS wrapper
+    const payload = body.Message ? JSON.parse(body.Message) : body;
 
     console.log('[PE] recibido', { appointmentId: payload.appointmentId });
+
+    await writeAudit({
+      appointmentId: payload.appointmentId,
+      insuredId: payload.insuredId,
+      scheduleId: payload.scheduleId,
+      countryISO: 'PE',
+      status: payload.status,
+      createdAt: payload.createdAt,
+      payload
+    });
 
 
     await eb.putEvents({

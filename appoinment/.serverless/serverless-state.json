@@ -13,7 +13,17 @@
         "APPOINTMENT_TOPIC_ARN": {
           "Ref": "AppointmentTopic"
         },
-        "EVENT_BUS_NAME": "default"
+        "EVENT_BUS_NAME": "default",
+        "PE_DB_HOST": "dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com",
+        "PE_DB_PORT": "3306",
+        "PE_DB_USER": "admin",
+        "PE_DB_PASS": "Softtek#2023",
+        "PE_DB_NAME": "app_pe",
+        "CL_DB_HOST": "dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com",
+        "CL_DB_PORT": "3306",
+        "CL_DB_USER": "admin",
+        "CL_DB_PASS": "Softtek#2023",
+        "CL_DB_NAME": "app_cl"
       },
       "iam": {
         "role": {
@@ -194,7 +204,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-framework-deployments-us-east-1-55023442-a1fe",
-                "S3Key": "serverless/appoinment/dev/1757049985906-2025-09-05T05:26:25.906Z/appoinment.zip"
+                "S3Key": "serverless/appoinment/dev/1757088442813-2025-09-05T16:07:22.813Z/appoinment.zip"
               },
               "Handler": "src/Interfaces/Http/appointment.router",
               "Runtime": "nodejs20.x",
@@ -208,6 +218,16 @@
                     "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"APPOINTMENT_TOPIC_ARN\"]"
                   },
                   "EVENT_BUS_NAME": "default",
+                  "PE_DB_HOST": "dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com",
+                  "PE_DB_PORT": "3306",
+                  "PE_DB_USER": "admin",
+                  "PE_DB_PASS": "Softtek#2023",
+                  "PE_DB_NAME": "app_pe",
+                  "CL_DB_HOST": "dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com",
+                  "CL_DB_PORT": "3306",
+                  "CL_DB_USER": "admin",
+                  "CL_DB_PASS": "Softtek#2023",
+                  "CL_DB_NAME": "app_cl",
                   "NODE_OPTIONS": "--enable-source-maps"
                 }
               },
@@ -227,7 +247,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-framework-deployments-us-east-1-55023442-a1fe",
-                "S3Key": "serverless/appoinment/dev/1757049985906-2025-09-05T05:26:25.906Z/appoinment.zip"
+                "S3Key": "serverless/appoinment/dev/1757088442813-2025-09-05T16:07:22.813Z/appoinment.zip"
               },
               "Handler": "src/Interfaces/Workers/appointment_pe.handler",
               "Runtime": "nodejs20.x",
@@ -241,6 +261,16 @@
                     "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"APPOINTMENT_TOPIC_ARN\"]"
                   },
                   "EVENT_BUS_NAME": "default",
+                  "PE_DB_HOST": "dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com",
+                  "PE_DB_PORT": "3306",
+                  "PE_DB_USER": "admin",
+                  "PE_DB_PASS": "Softtek#2023",
+                  "PE_DB_NAME": "app_pe",
+                  "CL_DB_HOST": "dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com",
+                  "CL_DB_PORT": "3306",
+                  "CL_DB_USER": "admin",
+                  "CL_DB_PASS": "Softtek#2023",
+                  "CL_DB_NAME": "app_cl",
                   "NODE_OPTIONS": "--enable-source-maps"
                 }
               },
@@ -260,7 +290,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-framework-deployments-us-east-1-55023442-a1fe",
-                "S3Key": "serverless/appoinment/dev/1757049985906-2025-09-05T05:26:25.906Z/appoinment.zip"
+                "S3Key": "serverless/appoinment/dev/1757088442813-2025-09-05T16:07:22.813Z/appoinment.zip"
               },
               "Handler": "src/Interfaces/Workers/appointment_cl.handler",
               "Runtime": "nodejs20.x",
@@ -274,6 +304,16 @@
                     "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"APPOINTMENT_TOPIC_ARN\"]"
                   },
                   "EVENT_BUS_NAME": "default",
+                  "PE_DB_HOST": "dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com",
+                  "PE_DB_PORT": "3306",
+                  "PE_DB_USER": "admin",
+                  "PE_DB_PASS": "Softtek#2023",
+                  "PE_DB_NAME": "app_pe",
+                  "CL_DB_HOST": "dbappointment.c2jccqskykox.us-east-1.rds.amazonaws.com",
+                  "CL_DB_PORT": "3306",
+                  "CL_DB_USER": "admin",
+                  "CL_DB_PASS": "Softtek#2023",
+                  "CL_DB_NAME": "app_cl",
                   "NODE_OPTIONS": "--enable-source-maps"
                 }
               },
@@ -288,34 +328,34 @@
               "AppointmentUnderscoreclLogGroup"
             ]
           },
-          "AppointmentLambdaVersion5jdk8nZRTXmNpehJihqygY0UzkGhDiDS09JztfV6Q": {
+          "AppointmentLambdaVersionB9gDcOtleCq6naXq3kQJ5UdWu4iIfp6IffTlOBYvs": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AppointmentLambdaFunction"
               },
-              "CodeSha256": "F5e3XbX58yFoBpIrAKaZFInJ6IKGXmYyZFpep+ES4/g="
+              "CodeSha256": "6NFYzjIpiRWDH37hL6U5zo5SbXWBEnZTDbmg/DcaAZg="
             }
           },
-          "AppointmentUnderscorepeLambdaVersionzP2YJ4GRUgDh1pUnWCG9T5vhIC8v1JhYC2Oooo1i7U": {
+          "AppointmentUnderscorepeLambdaVersionWMcIP2jaFWajK1OBmIYOudZ6a0CSAlrIL5P4Fzlw": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AppointmentUnderscorepeLambdaFunction"
               },
-              "CodeSha256": "F5e3XbX58yFoBpIrAKaZFInJ6IKGXmYyZFpep+ES4/g="
+              "CodeSha256": "6NFYzjIpiRWDH37hL6U5zo5SbXWBEnZTDbmg/DcaAZg="
             }
           },
-          "AppointmentUnderscoreclLambdaVersion3vxKzPJTdyPYjbC4eUWgvJG56TMUycmczcwRy7AsnZc": {
+          "AppointmentUnderscoreclLambdaVersion5lAuVi4BAFZ3VfOKNvyGzvFMAnluICTLVBXy7v6o": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AppointmentUnderscoreclLambdaFunction"
               },
-              "CodeSha256": "F5e3XbX58yFoBpIrAKaZFInJ6IKGXmYyZFpep+ES4/g="
+              "CodeSha256": "6NFYzjIpiRWDH37hL6U5zo5SbXWBEnZTDbmg/DcaAZg="
             }
           },
           "AppointmentEventSourceMappingSQSConfirmationQueue": {
@@ -735,7 +775,7 @@
           "AppointmentLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AppointmentLambdaVersion5jdk8nZRTXmNpehJihqygY0UzkGhDiDS09JztfV6Q"
+              "Ref": "AppointmentLambdaVersionB9gDcOtleCq6naXq3kQJ5UdWu4iIfp6IffTlOBYvs"
             },
             "Export": {
               "Name": "sls-appoinment-dev-AppointmentLambdaFunctionQualifiedArn"
@@ -744,7 +784,7 @@
           "AppointmentUnderscorepeLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AppointmentUnderscorepeLambdaVersionzP2YJ4GRUgDh1pUnWCG9T5vhIC8v1JhYC2Oooo1i7U"
+              "Ref": "AppointmentUnderscorepeLambdaVersionWMcIP2jaFWajK1OBmIYOudZ6a0CSAlrIL5P4Fzlw"
             },
             "Export": {
               "Name": "sls-appoinment-dev-AppointmentUnderscorepeLambdaFunctionQualifiedArn"
@@ -753,7 +793,7 @@
           "AppointmentUnderscoreclLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AppointmentUnderscoreclLambdaVersion3vxKzPJTdyPYjbC4eUWgvJG56TMUycmczcwRy7AsnZc"
+              "Ref": "AppointmentUnderscoreclLambdaVersion5lAuVi4BAFZ3VfOKNvyGzvFMAnluICTLVBXy7v6o"
             },
             "Export": {
               "Name": "sls-appoinment-dev-AppointmentUnderscoreclLambdaFunctionQualifiedArn"
@@ -839,7 +879,7 @@
         "timeout": 6,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "AppointmentLambdaVersion5jdk8nZRTXmNpehJihqygY0UzkGhDiDS09JztfV6Q"
+        "versionLogicalId": "AppointmentLambdaVersionB9gDcOtleCq6naXq3kQJ5UdWu4iIfp6IffTlOBYvs"
       },
       "appointment_pe": {
         "handler": "src/Interfaces/Workers/appointment_pe.handler",
@@ -863,7 +903,7 @@
         "timeout": 6,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "AppointmentUnderscorepeLambdaVersionzP2YJ4GRUgDh1pUnWCG9T5vhIC8v1JhYC2Oooo1i7U"
+        "versionLogicalId": "AppointmentUnderscorepeLambdaVersionWMcIP2jaFWajK1OBmIYOudZ6a0CSAlrIL5P4Fzlw"
       },
       "appointment_cl": {
         "handler": "src/Interfaces/Workers/appointment_cl.handler",
@@ -887,7 +927,7 @@
         "timeout": 6,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "AppointmentUnderscoreclLambdaVersion3vxKzPJTdyPYjbC4eUWgvJG56TMUycmczcwRy7AsnZc"
+        "versionLogicalId": "AppointmentUnderscoreclLambdaVersion5lAuVi4BAFZ3VfOKNvyGzvFMAnluICTLVBXy7v6o"
       }
     },
     "resources": {
@@ -1144,7 +1184,7 @@
     "layers": {}
   },
   "package": {
-    "artifactDirectoryName": "serverless/appoinment/dev/1757049985906-2025-09-05T05:26:25.906Z",
+    "artifactDirectoryName": "serverless/appoinment/dev/1757088442813-2025-09-05T16:07:22.813Z",
     "artifact": "appoinment.zip"
   }
 }
