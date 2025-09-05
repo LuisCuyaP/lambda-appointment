@@ -8,6 +8,7 @@ provider:
   environment:
     DDB_TABLE: AppointmentsTable
     APPOINTMENT_TOPIC_ARN: !Ref AppointmentTopic  
+    EVENT_BUS_NAME: default
   iam:
     role:
       statements:
@@ -25,6 +26,11 @@ provider:
         - Effect: Allow
           Action: sns:Publish
           Resource: !Ref AppointmentTopic
+        
+        # EventBridge
+        - Effect: Allow
+          Action: events:PutEvents
+          Resource: "*"
 
 plugins:
   - serverless-offline
@@ -39,6 +45,23 @@ functions:
       - httpApi:
           path: /appointments/{insuredId}
           method: get
+      - sqs:
+          arn: { Fn::GetAtt: [ ConfirmationQueue, Arn ] }
+          batchSize: 1
+  appointment_pe:
+    handler: src/Interfaces/Workers/appointment_pe.handler
+    events:
+      - sqs:
+          arn: { Fn::GetAtt: [ SqsPE, Arn ] }
+          batchSize: 1
+          maximumBatchingWindow: 0
+  appointment_cl:
+    handler: src/Interfaces/Workers/appointment_cl.handler
+    events:
+      - sqs:
+          arn: { Fn::GetAtt: [ SqsCL, Arn ] }
+          batchSize: 1
+          maximumBatchingWindow: 0
 
 resources:
   Resources:
@@ -69,7 +92,7 @@ resources:
       Type: AWS::SNS::Topic
       Properties:
         TopicName: appointment-topic
-        
+
     # --- SQS por país ---
     SqsPE:
       Type: AWS::SQS::Queue
@@ -130,3 +153,31 @@ resources:
               Condition:
                 ArnEquals:
                   aws:SourceArn: !Ref AppointmentTopic
+              
+    ConfirmationQueue:
+      Type: AWS::SQS::Queue
+      Properties: { QueueName: SQS_CONFIRMATION }
+
+    AppointmentConfirmedRule:
+      Type: AWS::Events::Rule
+      Properties:
+        Name: appointment-confirmed-rule
+        EventBusName: default
+        EventPattern:
+          source: [ "rimac.appointment" ]
+          detail-type: [ "AppointmentConfirmed" ]
+        Targets:
+          - Arn: !GetAtt ConfirmationQueue.Arn
+            Id: ConfirmationTarget
+
+    ConfirmationQueuePolicy:
+      Type: AWS::SQS::QueuePolicy
+      Properties:
+        Queues: [ !Ref ConfirmationQueue ]
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal: { Service: events.amazonaws.com }
+              Action: SQS:SendMessage
+              Resource: !GetAtt ConfirmationQueue.Arn
