@@ -81,6 +81,9 @@ provider:
 * POST - https://yj6hb7xlw1.execute-api.us-east-1.amazonaws.com/appointments
 * GET  - https://yj6hb7xlw1.execute-api.us-east-1.amazonaws.com/appointments/{insuredId}
 
+## Validar datos en RDS en consola
+* npx ts-node checkdb.ts
+
 ## Documentación OpenAPI
 1. Ingresar a swagger editor: https://swagger.io/tools/swagger-editor/
 2. Importar la sgte url: https://yj6hb7xlw1.execute-api.us-east-1.amazonaws.com/docs
